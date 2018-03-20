@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+
+
     public static final int RC_SIGN_IN = 1;
 
     String mUsername;
@@ -171,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
     public void toCamera(View view) {
         Intent intent = new Intent(MainActivity.this, Camera.class);
         intent.putExtra("EXTRA_USERNAME", mUsername);
+        intent.putExtra("EXTRA_ID", mUserID);
         startActivity(intent);
 
     }
