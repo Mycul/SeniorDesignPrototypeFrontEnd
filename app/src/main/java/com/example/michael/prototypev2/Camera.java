@@ -45,7 +45,7 @@ public class Camera extends AppCompatActivity {
 
     private ProgressBar mProgressBar;
     private Button mCameraButton;
-    
+
     String mCurrentPhotoPath;
 
     private StorageReference storage;
