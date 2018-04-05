@@ -1,9 +1,12 @@
 <resources>
-    <string name="app_name">PrototypeV2</string>
+    <string name="app_name">Snap-N-Snack</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="sign_out_menu">Sign Out</string>
 
     <string name="Camera">Camera</string>
     <string name="Demo_Add_Food">Demo Add Food</string>
     <string name="Food_Journal">Food Journal</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
