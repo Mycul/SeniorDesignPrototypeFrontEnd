@@ -99,6 +99,9 @@ public class Camera extends AppCompatActivity {
                 Uri photoURI = FileProvider.getUriForFile(this,"com.example.android.michael.prototypev2.fileprovider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
+
+
+
                 if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP) {
                     takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 }
