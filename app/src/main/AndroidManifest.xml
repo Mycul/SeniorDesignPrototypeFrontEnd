@@ -21,6 +21,15 @@
         android:roundIcon="@mipmap/sns_ic_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.android.michael.prototypev2.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths"></meta-data>
+        </provider>
         <activity android:name=".Camera" />
         <activity android:name=".DemoAddFood" android:label="@string/Demo_Add_Food" />
         <activity android:name=".FoodJournal" android:label="@string/Food_Journal"/>
