@@ -70,7 +70,7 @@ public class Camera extends AppCompatActivity {
 	    
         
 	File image = File.createTempFile(
-            
+           
 		imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
@@ -162,38 +162,38 @@ public class Camera extends AppCompatActivity {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
 
             Toast.makeText(this, "Entered on Activity result", Toast.LENGTH_LONG).show();
-            
-	    File imgFile = new File(mCurrentPhotoPath);	
+        
+	    File imgFile = new File(mCurrentPhotoPath);
+
+            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 	
-            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());	
-	
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();	
-	
-	
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);	
-            byte[] cameraData = baos.toByteArray();	
-	
-            String path = "SnapNSnack/" + UUID.randomUUID() + ".jpg";	
-            StorageReference firebaseStorageRef = storage.getReference(path);	
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	
 	
-            StorageMetadata metadata = new StorageMetadata.Builder()	
-                    .setCustomMetadata("userID", mUserID)	
-                    .build();	
-            mProgressBar.setVisibility(View.VISIBLE);	
-            mCameraButton.setEnabled(false);	
-            UploadTask uploadTask = firebaseStorageRef.putBytes(cameraData, metadata);	
-            uploadTask.addOnSuccessListener(Camera.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {	
-                @Override	
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {	
-                    mProgressBar.setVisibility(View.GONE);	
-                    mCameraButton.setEnabled(true);	
-	
-                    
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();	
-                    downloadUrlTextView.setText(downloadUrl.toString());	
-                    downloadUrlTextView.setVisibility(View.VISIBLE);	
-                }	
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] cameraData = baos.toByteArray();
+
+            String path = "SnapNSnack/" + UUID.randomUUID() + ".jpg";
+            StorageReference firebaseStorageRef = storage.getReference(path);
+
+
+            StorageMetadata metadata = new StorageMetadata.Builder()
+                    .setCustomMetadata("userID", mUserID)
+                    .build();
+            mProgressBar.setVisibility(View.VISIBLE);
+            mCameraButton.setEnabled(false);
+            UploadTask uploadTask = firebaseStorageRef.putBytes(cameraData, metadata);
+            uploadTask.addOnSuccessListener(Camera.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    mProgressBar.setVisibility(View.GONE);
+                    mCameraButton.setEnabled(true);
+
+                 
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    downloadUrlTextView.setText(downloadUrl.toString());
+                    downloadUrlTextView.setVisibility(View.VISIBLE);
+                }
             });
             
             /*
@@ -223,19 +223,19 @@ public class Camera extends AppCompatActivity {
     }
 
     @Override	
-    protected void onSaveInstanceState(Bundle outState) {	
-        super.onSaveInstanceState(outState);	
-        if (mCurrentPhotoPath != null) {	
-            outState.putString("mCurrentPhotoPath", mCurrentPhotoPath);	
-        }	
-    }	
-	 
-    @Override	
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {	
-        super.onRestoreInstanceState(savedInstanceState);	
-        if (savedInstanceState.containsKey("mCurrentPhotoPath")) {	
-            mCurrentPhotoPath = savedInstanceState.getString("mCurrentPhotoPath");	
-        }	
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mCurrentPhotoPath != null) {
+            outState.putString("mCurrentPhotoPath", mCurrentPhotoPath);
+        }
+    }
+	
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState.containsKey("mCurrentPhotoPath")) {
+            mCurrentPhotoPath = savedInstanceState.getString("mCurrentPhotoPath");
+        }
     }
 
 
