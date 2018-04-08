@@ -3,24 +3,4 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="SNSDarkOrange">#FF5733</color>
-    <color name="SNSbrightgreen">#33FF57</color>
-    <color name="Sexyblue">#5733FF</color>
-    <color name="softlilac">#DE5974</color>
-
-    <!-- the legit colors -->
-    <color name="SNSOrange">#FF960B</color>
-    <color name="LoyalBlue">#0B74FF</color>
-
-    <!-- potential main color replacement -->
-    <color name="AltOrange">#FF960B</color>
-
-    <!-- triadic colors -->
-    <color name="brightTeal">#0BFF96</color>
-    <color name="royalPurple">#960BFF</color>
-
-    <!-- good neturals -->
-    <color name="acceptableYellow">#FFD30B</color>
-
-
 </resources>
