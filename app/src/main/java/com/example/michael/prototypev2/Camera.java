@@ -48,16 +48,15 @@ public class Camera extends AppCompatActivity {
     String mUserID;
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-    
+
     private String pictureImagePath = "";
     private ProgressBar mProgressBar;
     private Button mCameraButton;
-    
+
     File photoFile;
 
     String mCurrentPhotoPath;
 
-    //private StorageReference storage;
     private TextView downloadUrlTextView;
 
 
@@ -66,17 +65,24 @@ public class Camera extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
+
+
+	    
+        
+	File image = File.createTempFile(
+            
+		imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
 
+
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+        
+	return image;
     }
-    public void takePhoto(View view){
+    public void takePhoto(View view) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -86,18 +92,17 @@ public class Camera extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File...
+
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                /*Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.michael.prototypev2.fileprovider",
-                        photoFile);
-                        */
-                //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 Uri photoURI = FileProvider.getUriForFile(this,"com.example.android.michael.prototypev2.fileprovider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 
-                if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP) {	
+                
+		    
+		    
+		if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP) {	
                     takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);	
                 }	
                 else if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN) {	
@@ -122,8 +127,7 @@ public class Camera extends AppCompatActivity {
                 
                 
                 
-                
-                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
+      		startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
             }
         }
     }
@@ -133,7 +137,6 @@ public class Camera extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        //storage = FirebaseStorage.getInstance().getReference();
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
@@ -159,7 +162,8 @@ public class Camera extends AppCompatActivity {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
 
             Toast.makeText(this, "Entered on Activity result", Toast.LENGTH_LONG).show();
-            File imgFile = new File(mCurrentPhotoPath);	
+            
+	    File imgFile = new File(mCurrentPhotoPath);	
 	
             Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());	
 	
