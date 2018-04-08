@@ -98,30 +98,29 @@ public class Camera extends AppCompatActivity {
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,"com.example.android.michael.prototypev2.fileprovider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                
-                
-		    
-		    
-		if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP) {	
-                    takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);	
-                }	
-                else if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN) {	
-                    ClipData clip=	
-                            ClipData.newUri(getContentResolver(), "A photo", photoURI);	
-	
-                    takePictureIntent.setClipData(clip);	
-                    takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);	
-                }	
-                else {	
-                    List<ResolveInfo> resInfoList=	
-                            getPackageManager()	
-                                    .queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);	
-	
-                    for (ResolveInfo resolveInfo : resInfoList) {	
-                        String packageName = resolveInfo.activityInfo.packageName;	
-                        grantUriPermission(packageName, photoURI,	
-                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION);	
-                    }	
+
+
+
+		if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP) {
+                    takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                }
+                else if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN) {
+                    ClipData clip=
+                            ClipData.newUri(getContentResolver(), "A photo", photoURI);
+
+                    takePictureIntent.setClipData(clip);
+                    takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                }
+                else {
+                    List<ResolveInfo> resInfoList=
+                            getPackageManager()
+                                    .queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+
+                    for (ResolveInfo resolveInfo : resInfoList) {
+                        String packageName = resolveInfo.activityInfo.packageName;
+                        grantUriPermission(packageName, photoURI,
+                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    }
                 }
                 
                 
