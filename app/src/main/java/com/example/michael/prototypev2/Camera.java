@@ -126,7 +126,7 @@ public class Camera extends AppCompatActivity {
                 
                 
                 
-      		startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
+      		startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
     }
