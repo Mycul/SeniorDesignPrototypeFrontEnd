@@ -1,27 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.michael.prototypev2">
-    
-    <uses-permission android:name="android.permission.CAMERA"/>
-
+    <!-- <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="true" />
-
-
-
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" /> -->
+   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/sns_ic"
-        android:label="Snap-N-Snack"
-        android:roundIcon="@mipmap/sns_ic_round"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.android.michael.prototypev2.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths"></meta-data>
+        </provider>
         <activity android:name=".Camera" />
-        <activity android:name=".DemoAddFood" android:label="@string/Demo_Add_Food" />
-        <activity android:name=".FoodJournal" android:label="@string/Food_Journal"/>
-        <activity android:name=".FoodPerDay" android:label="@string/todays_food" />
+        <activity android:name=".DemoAddFood" />
+        <activity android:name=".FoodJournal" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_title"
+            android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +39,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".FoodPerDay"></activity>
     </application>
+
 
 </manifest>
