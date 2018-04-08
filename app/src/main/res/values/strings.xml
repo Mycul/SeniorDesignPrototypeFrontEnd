@@ -7,6 +7,7 @@
     <string name="Demo_Add_Food">Demo Add Food</string>
     <string name="Food_Journal">Food Journal</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_title">Snap-N-Snack</string>
+    <string name="sign_in">Sign In</string>
+    <string name="todays_food">Today\'s Food Entries</string>
 </resources>

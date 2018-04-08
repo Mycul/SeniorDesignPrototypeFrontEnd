@@ -64,23 +64,23 @@ public class Camera extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES); //!
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
 
-
-
-       File image = File.createTempFile(
-
-               imageFileName,  /* prefix */
-               ".jpg",         /* suffix */
-               storageDir      /* directory */
-      );
+	    
+        
+	File image = File.createTempFile(
+           
+		imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
 
 
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
-        //mCurrentPhotoPath = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/images/temp.jpg";
-        return image;
+        
+	return image;
     }
     public void takePhoto(View view) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -91,7 +91,7 @@ public class Camera extends AppCompatActivity {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // Error occurred while creating the File
+                // Error occurred while creating the File...
 
             }
             // Continue only if the File was successfully created
@@ -101,8 +101,7 @@ public class Camera extends AppCompatActivity {
 
 
 
-
-                if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP) {
+		if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP) {
                     takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 }
                 else if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN) {
@@ -123,73 +122,15 @@ public class Camera extends AppCompatActivity {
                                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     }
                 }
-
-
-
-
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                
+                
+                
+                
+      		startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
             }
         }
     }
-    /*
-        public void takePhoto(View view){
 
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = timeStamp + ".jpg";
-            File storageDir = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES);
-            pictureImagePath = storageDir.getAbsolutePath() + "/" + imageFileName;
-            File file = new File(pictureImagePath);
-            Uri outputFileUri = Uri.fromFile(file);
-            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-            startActivityForResult(cameraIntent, 1);
-
-
-
-
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            // Ensure that there's a camera activity to handle the intent
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                // Create the File where the photo should go
-
-                // Create an image file name
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                String imageFileName = "JPEG_" + timeStamp + "_";
-                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES); //!
-                pictureImagePath = storageDir.getAbsolutePath() + "/" + imageFileName;
-                photoFile = new File(pictureImagePath);
-                Uri outputFileUri = Uri.fromFile(photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
-
-
-
-
-                // Save a file: path for use with ACTION_VIEW intents
-                //mCurrentPhotoPath = image.getAbsolutePath();
-
-
-
-                photoFile = null;
-                try {
-                    photoFile = createImageFile();
-                } catch (IOException ex) {
-                    // Error occurred while creating the File...
-                }
-                // Continue only if the File was successfully created
-                if (photoFile != null) {
-                    Uri photoURI = FileProvider.getUriForFile(this,
-                            "com.example.android.michael.prototypev2.fileprovider",
-                            photoFile);
-
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                    startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
-                }
-            }
-
-        }
-    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -220,14 +161,14 @@ public class Camera extends AppCompatActivity {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
 
             Toast.makeText(this, "Entered on Activity result", Toast.LENGTH_LONG).show();
-
-            File imgFile = new File(mCurrentPhotoPath);
+        
+	    File imgFile = new File(mCurrentPhotoPath);
 
             Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
+	
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-
+	
+	
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] cameraData = baos.toByteArray();
 
@@ -247,14 +188,14 @@ public class Camera extends AppCompatActivity {
                     mProgressBar.setVisibility(View.GONE);
                     mCameraButton.setEnabled(true);
 
-                    //todo: figure out why this part gives me a null pointer exception
+                 
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     downloadUrlTextView.setText(downloadUrl.toString());
                     downloadUrlTextView.setVisibility(View.VISIBLE);
                 }
             });
-
-           /*
+            
+            /*
             //Uri file = Uri.fromFile(photoFile);
             Uri uri = data.getData();
 
@@ -275,20 +216,19 @@ public class Camera extends AppCompatActivity {
                     downloadUrlTextView.setVisibility(View.VISIBLE);
                 }
             });
-
         */
 
         }
     }
 
-    @Override
+    @Override	
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mCurrentPhotoPath != null) {
             outState.putString("mCurrentPhotoPath", mCurrentPhotoPath);
         }
     }
-
+	
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
