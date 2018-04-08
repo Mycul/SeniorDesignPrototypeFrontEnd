@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
     public void toCamera(View view) {
         Intent intent = new Intent(MainActivity.this, Camera.class);
         intent.putExtra("EXTRA_USERNAME", mUsername);
+        intent.putExtra("EXTRA_ID", mUserID);
         startActivity(intent);
 
     }
