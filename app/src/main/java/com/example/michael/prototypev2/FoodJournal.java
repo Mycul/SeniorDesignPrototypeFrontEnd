@@ -22,6 +22,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +102,7 @@ public class FoodJournal extends AppCompatActivity {
                     DaysModel day = postSnapshot.getValue(DaysModel.class);
                     days.add(day);
                 }
-
+                Collections.reverse(days);
                 //creating the adapter
                 DaysList daysAdapter = new DaysList(FoodJournal.this, days);
 

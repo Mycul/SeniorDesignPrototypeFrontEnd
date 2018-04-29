@@ -1,6 +1,5 @@
 package com.example.michael.prototypev2;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,31 +7,22 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -41,26 +31,15 @@ import com.google.firebase.storage.UploadTask;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 public class Camera extends AppCompatActivity  implements AsyncResponse{
 
@@ -87,7 +66,9 @@ public class Camera extends AppCompatActivity  implements AsyncResponse{
     String dateID = sdf2.format(new Date());
     String foodItem;
 
+    Bitmap bitmap;
 
+    int k = 0;
 
 
     //end of demo add food stuff
@@ -110,10 +91,26 @@ public class Camera extends AppCompatActivity  implements AsyncResponse{
     String mCurrentPhotoPath;
 
     private TextView downloadUrlTextView;
-    private TextView result1;
-    private TextView result2;
-    private TextView result3;
+    private TextView instructionTextView1;
+    private TextView instructionTextView2;
+    private TextView instructionTextView3;
+    private TextView instructionTextView4;
+    private TextView instructionTextView5;
+    private TextView instructionTextView6;
 
+
+
+
+    private ImageView foodImageView;
+
+
+    String foodFound = "";
+    double foodScore = 0;
+    double foodXmult = 0;
+    double foodYmult = 0;
+
+    List<String> foodNames = new ArrayList<>();
+    List<Double> foodScores = new ArrayList<>();
 
 
     private File createImageFile() throws IOException {
@@ -194,7 +191,46 @@ public class Camera extends AppCompatActivity  implements AsyncResponse{
             mUsername = extras.getString("EXTRA_USERNAME");
             mUserID = extras.getString("EXTRA_ID");
         }
+        mProgressBar = (ProgressBar) findViewById(R.id.uploadPictureSpinner);
+        mCameraButton = (Button) findViewById(R.id.camera_button);
+        downloadUrlTextView = (TextView) findViewById(R.id.donwloadUrlTextView);
+        instructionTextView1 = (TextView) findViewById(R.id.instructionsTextView1);
+        instructionTextView2 = (TextView) findViewById(R.id.instructionsTextView2);
+        instructionTextView3 = (TextView) findViewById(R.id.instructionsTextView3);
+        instructionTextView4 = (TextView) findViewById(R.id.instructionsTextView4);
+        instructionTextView5 = (TextView) findViewById(R.id.instructionsTextView5);
+        instructionTextView6 = (TextView) findViewById(R.id.instructionsTextView6);
 
+        mCameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takePhoto(view);
+            }
+        });
+
+
+        foodImageView = (ImageView) findViewById(R.id.foodImage);
+
+        //keeps track of the current photo if the user changes orientation
+        if(savedInstanceState != null){
+           mCurrentPhotoPath = savedInstanceState.getString("mCurrentPhotoPath");
+        }
+
+        if(mCurrentPhotoPath != null) {
+            File imgFile = new File(mCurrentPhotoPath);
+            //System.out.println(mCurrentPhotoPath);
+            bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            //System.out.println(imgFile.getAbsolutePath());
+            instructionTextView1.setVisibility(View.GONE);
+            instructionTextView2.setVisibility(View.GONE);
+            instructionTextView3.setVisibility(View.GONE);
+            instructionTextView4.setVisibility(View.GONE);
+            instructionTextView5.setVisibility(View.GONE);
+            instructionTextView6.setVisibility(View.GONE);
+
+            foodImageView.setImageBitmap(bitmap);
+
+        }
         //async result listener
         MS = new messageSender();
         MS.delegate = this;
@@ -216,53 +252,11 @@ public class Camera extends AppCompatActivity  implements AsyncResponse{
         //end
 
 
-        mProgressBar = (ProgressBar) findViewById(R.id.uploadPictureSpinner);
-        mCameraButton = (Button) findViewById(R.id.camera_button);
-        downloadUrlTextView = (TextView) findViewById(R.id.donwloadUrlTextView);
-        result1 = (TextView) findViewById(R.id.resultTextView1);
-        result2 = (TextView) findViewById(R.id.resultTextView2);
-        result3 = (TextView) findViewById(R.id.resultTextView3);
+
 
     }
 
-    //Demo add food functions
 
-    public void addToDays(){
-        final String id = dateID;
-        final DaysModel daysModel = new DaysModel(id, currentDate);
-        databaseDays.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(id)){
-                    //do nothing, user already in database
-                }else{
-                    //saving the user to the database
-                    databaseDays.child(id).setValue(daysModel);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-    public void addToJournal(String foodName){
-        //foodItem = mEdit.getText().toString();
-        foodItem = foodName; //TODO: Replace with value from the parsed JSON
-        String calories = "temporary#";
-        if(!TextUtils.isEmpty(foodItem)){
-            String id = databaseFood.push().getKey();
-            FoodModel foodModel = new FoodModel(id, foodItem, calories);
-            databaseFood.child(id).setValue(foodModel);
-            Toast.makeText(this, "Food Saved", Toast.LENGTH_LONG).show();
-            //mEdit.setText("");
-        }else{
-            Toast.makeText(this, "Please Enter a Food Item", Toast.LENGTH_LONG).show();
-        }
-    }
-
-//end of demo add food functions
 
 
 
@@ -271,12 +265,28 @@ public class Camera extends AppCompatActivity  implements AsyncResponse{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
 
-            Toast.makeText(this, "Entered on Activity result", Toast.LENGTH_LONG).show();
-        
-	    File imgFile = new File(mCurrentPhotoPath);
+            instructionTextView1.setVisibility(View.GONE);
+            instructionTextView2.setVisibility(View.GONE);
+            instructionTextView3.setVisibility(View.GONE);
+            instructionTextView4.setVisibility(View.GONE);
+            instructionTextView5.setVisibility(View.GONE);
+            instructionTextView6.setVisibility(View.GONE);
 
-            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-	
+            mCameraButton.setText(R.string.CameraBackToMenu);
+            mCameraButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+
+
+	        File imgFile = new File(mCurrentPhotoPath);
+
+            bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+	        //System.out.println(imgFile.getAbsolutePath());
+            foodImageView.setImageBitmap(bitmap);
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	
 	
@@ -301,37 +311,13 @@ public class Camera extends AppCompatActivity  implements AsyncResponse{
 
                  
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    downloadUrlTextView.setText(downloadUrl.toString());
-                    downloadUrlTextView.setVisibility(View.VISIBLE);
+                    //downloadUrlTextView.setText(downloadUrl.toString());
+                    //downloadUrlTextView.setVisibility(View.VISIBLE);
 
                     response = "";
                     MS = new messageSender();
                     MS.delegate = delegateBackup;
                     MS.execute(downloadUrl.toString());
-
-
-
-                    /*
-                    try {
-                        response = MS.get();
-
-                        result1.setText(response);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                    */
-                    //while(response == "") {
-                       // result1.setText(response);
-                        //result1.setVisibility(View.VISIBLE);
-
-                   // }
-                    //addToDays();
-                    //addToJournal(); //TODO: set up the receiving of data from computer and parse into parts that can be
-
-
-
 
 
 
@@ -349,6 +335,7 @@ public class Camera extends AppCompatActivity  implements AsyncResponse{
         if (mCurrentPhotoPath != null) {
             outState.putString("mCurrentPhotoPath", mCurrentPhotoPath);
         }
+
     }
 	
     @Override
@@ -364,24 +351,73 @@ public class Camera extends AppCompatActivity  implements AsyncResponse{
         mProgressBar.setVisibility(View.GONE);
         mCameraButton.setEnabled(true);
         response = output;
-        result1.setText(response);
+        int numFood = 0;
+        String text = "";
 
         try{
-            List<String> items = new ArrayList<>();
+
             JSONObject root = new JSONObject(response);
+            numFood = root.getInt("NumItems");
+            downloadUrlTextView.setVisibility(View.VISIBLE);
+            text = "Number of food items detected: " + numFood;
+            downloadUrlTextView.setText(text);
             JSONArray array = root.getJSONArray("Items");
             //System.out.println(root.getString("FoodItem"));
 
             for(int i =0; i < array.length(); i++){
                 JSONObject object = array.getJSONObject(i);
-                items.add(object.getString("FoodItem"));
-                System.out.println(items.get(i));
-                //TODO:change this so the user can choose to add the item or not for now it will add the first value found to food journal
-                if(i == 0){
-                    addToDays();
-                    addToJournal(items.get(i));
-                }
+                foodFound = object.getString("FoodItem");
+                foodScore = object.getDouble("Score");
+                foodXmult = object.getDouble("CenterX");
+                foodYmult = object.getDouble("CenterY");
+
+                foodNames.add(foodFound);
+                System.out.println(foodScore);
+                foodScores.add(foodScore);
+                int height = foodImageView.getMeasuredHeight();
+                int width = foodImageView.getMeasuredWidth();
+                double xOffset = (width * foodXmult) - 100;
+                double yOffset = (height * foodYmult) - 100;
+                System.out.println("height:" + height);
+                System.out.println("width:" + width);
+
+                RelativeLayout myLayout = (RelativeLayout)findViewById(R.id.relativeLayout);
+
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100, 100);
+                params.leftMargin = (int) xOffset;
+                params.topMargin = (int) yOffset;
+                Button testButton = new Button(this);
+                testButton.setId(i);
+                final int id_ = testButton.getId();
+                testButton.setBackgroundColor(0x900921FA);
+
+                testButton.setBackgroundResource(R.drawable.round_button);
+
+
+
+                myLayout.addView(testButton, params);
+                Button btn1 = ((Button) findViewById(id_));
+                System.out.println(id_);
+
+                System.out.println(foodScores.get(id_));
+
+                btn1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //toResult(view);
+                        Intent intent = new Intent(Camera.this, ResultActivity.class);
+                        intent.putExtra("EXTRA_USERNAME", mUsername);
+                        intent.putExtra("EXTRA_ID", mUserID);
+                        intent.putExtra("FOOD_FOUND", foodNames.get(id_));
+                        intent.putExtra("FOODS_SCORE", foodScores.get(id_));
+                        startActivity(intent);
+                    }
+                });
+
             }
+
+            //foodImageView.setImageBitmap(bitmap);
+
 
             //JSONObject nested = root.getJSONObject("nested");
             //Log.d("TAG","flag value "+nested.getBoolean("flag"));
@@ -392,6 +428,7 @@ public class Camera extends AppCompatActivity  implements AsyncResponse{
 
 
     }
+
 
 
 

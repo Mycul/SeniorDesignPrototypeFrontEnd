@@ -4,6 +4,8 @@
     <string name="sign_out_menu">Sign Out</string>
 
     <string name="Camera">Camera</string>
+    <string name="CameraTakePhoto">Take Photo</string>
+    <string name="CameraBackToMenu">Return to Menu</string>
     <string name="Demo_Add_Food">Demo Add Food</string>
     <string name="Food_Journal">Food Journal</string>
 
