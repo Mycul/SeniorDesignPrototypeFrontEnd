@@ -4,10 +4,20 @@
     <string name="sign_out_menu">Sign Out</string>
 
     <string name="Camera">Camera</string>
+    <string name="CameraTakePhoto">Take Photo</string>
+    <string name="CameraBackToMenu">Return to Menu</string>
     <string name="Demo_Add_Food">Demo Add Food</string>
     <string name="Food_Journal">Food Journal</string>
 
     <string name="app_title">Snap-N-Snack</string>
     <string name="sign_in">Sign In</string>
     <string name="todays_food">Today\'s Food Entries</string>
+    <string name="no_val">No</string>
+    <string name="yes_val">Yes</string>
+    <string name="confidence_val">With a confidence of:</string>
+    <string name="selected_food">Food Selected appears to be:</string>
+    <string name="add_to_journal">Would you like to add this Item to your food journal?</string>
+
+
+
 </resources>

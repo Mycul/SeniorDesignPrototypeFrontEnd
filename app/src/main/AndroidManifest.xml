@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.michael.prototypev2">
-    <!-- <uses-permission android:name="android.permission.CAMERA" />
+
+    <!--
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <uses-feature
@@ -9,8 +11,9 @@
         android:required="true" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
-        android:required="false" /> -->
-   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        android:required="false" />
+    -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -26,12 +29,19 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/paths"></meta-data>
+                android:resource="@xml/paths" />
         </provider>
+
         <activity android:name=".Camera" />
-        <activity android:name=".DemoAddFood" android:label="@string/Demo_Add_Food" />
-        <activity android:name=".FoodJournal" android:label="@string/Food_Journal"/>
-        <activity android:name=".FoodPerDay" android:label="@string/todays_food" />
+        <activity
+            android:name=".DemoAddFood"
+            android:label="@string/Demo_Add_Food" />
+        <activity
+            android:name=".FoodJournal"
+            android:label="@string/Food_Journal" />
+        <activity
+            android:name=".FoodPerDay"
+            android:label="@string/todays_food" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_title"
@@ -42,6 +52,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ResultActivity"></activity>
     </application>
 
 </manifest>
