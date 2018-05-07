@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                                             new AuthUI.IdpConfig.EmailBuilder().build(),
                                             new  AuthUI.IdpConfig.GoogleBuilder().build()
                                     ))
+                                    .setTheme(R.style.sameTheme)
                                     .build(),
                             RC_SIGN_IN);
                 }

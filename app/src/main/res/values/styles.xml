@@ -5,7 +5,13 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/SNSOrange</item>
         <item name="colorPrimaryDark">@color/LoyalBlue</item>
-        <item name="colorAccent">@color/brightTeal</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="sameTheme" parent="FirebaseUI">
+        <item name="colorPrimary">@color/SNSOrange</item>
+        <item name="colorPrimaryDark">@color/LoyalBlue</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -16,6 +22,20 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="listview" parent="@android:style/Widget.ListView">
+        <item name="android:background">@color/light_grey</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:dividerHeight">0dp</item>
+    </style>
+
+    <style name="textview" parent="@android:style/Widget.ListView">
+        <item name="android:background">@color/light_grey</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+        <item name="android:divider">#000000</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="android:textSize">25dp</item>
+    </style>
 
 
 </resources>
