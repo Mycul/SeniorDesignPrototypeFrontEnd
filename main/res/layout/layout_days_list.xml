@@ -8,5 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Days"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+        android:textSize="20sp"
+        android:textAppearance="@style/textview" />
 </LinearLayout>
+<!--Base.TextAppearance.AppCompat.Large-->
