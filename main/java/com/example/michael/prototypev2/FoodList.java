@@ -34,7 +34,7 @@ public class FoodList extends ArrayAdapter<FoodModel>{
         TextView textViewCalories = (TextView) listViewItem.findViewById(R.id.textViewCalories);
 
         FoodModel food = foods.get(position);
-        textViewFood.setText(food.getFoodName());
+        textViewFood.setText((position + 1) + ": " + food.getFoodName());
         textViewCalories.setText(food.getCalorieCount());
 
         return listViewItem;
